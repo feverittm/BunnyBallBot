@@ -21,22 +21,12 @@ public class RobotMap {
 		//CAN
 		leftTalonPort = 3,
 		rightTalonPort = 8,
-		elevatorTalonPort = 2,
-		
-		//ANALOGINPUT
-		leftCollectorSensorInput = 0,
-		rightCollectorSensorInput = 1,
 		
 		//PWM
 		leftVictorPort = 4,
 		leftVictorPort2 = 5,
 		rightVictorPort = 6,
 		rightVictorPort2 = 7,
-		climberVictorPort = 0,
-		climberVictorPort2 = 1,
-		elevatorVictorPort = 1,
-		leftCollectorPort = 2,
-		rightCollectorPort = 3,
 		
 		//PNEUMATICS
 		shifterSolenoidLow = 0,
@@ -72,24 +62,9 @@ public class RobotMap {
 		robotWidth = 37.25,
 		robotWheelBase = 30,
 		
-		autoSwitchDistance = 14, //in feet (supposedly)
-		autoScaleDistance = 28, //in feet
-		
-		//From back of wall to front of switch. Measure these at each comp!
-		autoLeftSwitchTotal = 139/12, //11.79167, 
-		autoRightSwitchTotal = 139/12, //11.77083,
-		autoCenterSwitchTotal = 139/12, //12,
-				
-		slowcollectspeed = 0.25,
-		fastcollectspeed = 0.75,
-		collectspeed = 1,
-
 		driveDistanceP = 0.00025,
 		driveDistanceI = 0.0,
 		driveDistanceD = 0.0,
-		elevatorPidP = 0.75,
-		elevatorPidI = 0.001,
-		elevatorPidD = 0, //0.1,
 		driveAngleP = 0.015, //0.035, then 0.0138, then 0.0244 (important one), then 0.00694, then 0.0138
 		driveAngleI = 0.002595, //0.000138 (important one) then 0.000038 then 0.000138 then 0.0001037 
 		//then 0.000138 then 0.000514
