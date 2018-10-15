@@ -27,6 +27,9 @@ public class RobotMap {
 		leftVictorPort2 = 5,
 		rightVictorPort = 6,
 		rightVictorPort2 = 7,
+
+		//Ball Gatherer/Collector
+		gatherVictor = 0,
 		
 		//PNEUMATICS
 		shifterSolenoidLow = 0,
@@ -46,6 +49,7 @@ public class RobotMap {
 		
 		rightDriveTrain = 0,
 		rightDriveTrain2 = 1,
+		gatherVictor = 2,
 		leftDriveTrain = 12,
 		leftDriveTrain2 = 13,
 		leftDriveTrainTalon = 14,
