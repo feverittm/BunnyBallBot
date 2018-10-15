@@ -38,9 +38,17 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    drivetrain = new DriveTrain();
-    pdp = new PowerDistributionPanel();
-    m_oi = new OI();
+    try {
+      pdp = new PowerDistributionPanel();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    try {
+      drivetrain = new DriveTrain();
+    } catch (Exception e) {
+      m_oi = new OI();
+    }
     
     pdp.clearStickyFaults();
     LiveWindow.disableTelemetry(pdp); // turn-off the telemetry features in Livewindow to stop the CTRE Timeouts
