@@ -15,8 +15,11 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.AutoDoNothing;
+import frc.robot.subsystems.BallDumper;
+import frc.robot.subsystems.BunnyDumper;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Gatherer;
+import frc.robot.subsystems.Sorter;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -28,6 +31,9 @@ import frc.robot.subsystems.Gatherer;
 public class Robot extends TimedRobot {
   public static DriveTrain drivetrain;
   public static Gatherer gather;
+  public static BallDumper ballDumper;
+  public static BunnyDumper bunnyDumper;
+  public static Sorter sorter;
   public static PowerDistributionPanel pdp;
   public static OI m_oi;
 
@@ -55,6 +61,31 @@ public class Robot extends TimedRobot {
 
     try {
       gather = new Gatherer();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    try {
+      bunnyDumper = new BunnyDumper();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    try {
+      ballDumper = new BallDumper();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    try {
+      sorter = new Sorter();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    try {
+      pdp = new PowerDistributionPanel();
+      pdp.clearStickyFaults();
     } catch (Exception e) {
       e.printStackTrace();
     }
