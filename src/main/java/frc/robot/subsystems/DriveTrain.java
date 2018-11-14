@@ -50,10 +50,17 @@ public class DriveTrain extends Subsystem implements IDriveTrain {
 
 	public DriveTrain() {
 
-		/* 
-		 * Simple examples from TalonSRX example code to include VictorSPX example code:
-		 *    https://github.com/CrossTheRoadElec/Phoenix-Examples-Languages/blob/master/Java/SixTalonArcadeDrive
-		 *    https://github.com/CrossTheRoadElec/Phoenix-Examples-Languages/blob/master/Java/VelocityClosedLoop
+
+		/*
+		 *   These are basic TalonSRX references that describe followers and VictorSPX usage:
+		 * https://github.com/CrossTheRoadElec/Phoenix-Examples-Languages/blob/master/Java/SixTalonArcadeDrive
+		 * https://github.com/CrossTheRoadElec/Phoenix-Examples-Languages/blob/master/Java/VelocityClosedLoop
+		 *
+		 *   Our main java drive train code from last year's competition robot that used similar motor controllers:
+		 * https://github.com/Team997Coders/2018PowerUp/blob/master/src/main/java/frc/team997/robot/subsystems/DriveTrain.java
+		 *
+		 *   This is the drive train code from last year's Bunnybot that had shifters:
+		 * https://github.com/Team997Coders/BunnyBotElmer/blob/master/src/main/java/frc/team997/robot/subsystems/DriveTrain.java
 		 */
 		
 		leftTalon = new TalonSRX(RobotMap.Ports.leftTalonPort);
