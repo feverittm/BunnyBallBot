@@ -18,7 +18,7 @@ import frc.robot.RobotMap;
 /**
  *
  */
-public class DriveTrain extends Subsystem {
+public class DriveTrain extends Subsystem implements IDriveTrain {
 
 	private TalonSRX leftTalon;
 	private TalonSRX rightTalon;
