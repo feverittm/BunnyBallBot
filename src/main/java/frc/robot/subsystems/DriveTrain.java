@@ -20,9 +20,9 @@ import frc.robot.RobotMap;
  */
 public class DriveTrain extends Subsystem implements IDriveTrain {
 
+	// Include Talon motor controller code from last year's competition robot
 	private TalonSRX leftTalon;
 	private TalonSRX rightTalon;
-	//temp
 	private VictorSPX leftVictor;
 	private VictorSPX leftVictor2;
 	private VictorSPX rightVictor;
@@ -30,26 +30,30 @@ public class DriveTrain extends Subsystem implements IDriveTrain {
 	private double prevLeftV;
 	private double prevRightV;
 	
+	// Include the shifter solenoid spec from last year's bunnybot.
 	public DoubleSolenoid shiftSolenoid;
-	private AHRS ahrs;
-	private double init_angle;
-
-	public boolean decellOn = true; // Default is false.
-	public boolean gyropresent = false;
-	public double decellSpeed = 0.2;
-	public double decellDivider = 1.2;
-	
 	int delayCount = 0;
 	public int gear = 0;
 
+	// We'll have a NavX Micro gyro.  We should be using the getHeading() method
+	// but we are using our own calculation
+	private AHRS ahrs;
+	private double init_angle;
+	public boolean gyropresent = false;
+
+	public boolean decellOn = true; // Default is false.
+	public double decellSpeed = 0.2;
+	public double decellDivider = 1.2;
+	
 	public static double totalLeftCurrent;
 	public static double totalRightCurrent;
 
 	public DriveTrain() {
 
-		/*
-		 * https://github.com/CrossTheRoadElec/Phoenix-Examples-Languages/blob/master/Java/SixTalonArcadeDrive
-		 * https://github.com/CrossTheRoadElec/Phoenix-Examples-Languages/blob/master/Java/VelocityClosedLoop
+		/* 
+		 * Simple examples from TalonSRX example code to include VictorSPX example code:
+		 *    https://github.com/CrossTheRoadElec/Phoenix-Examples-Languages/blob/master/Java/SixTalonArcadeDrive
+		 *    https://github.com/CrossTheRoadElec/Phoenix-Examples-Languages/blob/master/Java/VelocityClosedLoop
 		 */
 		
 		leftTalon = new TalonSRX(RobotMap.Ports.leftTalonPort);
@@ -235,6 +239,7 @@ public class DriveTrain extends Subsystem implements IDriveTrain {
 	}
 	
 	public double getHeading() {
+		//ahrs.getFusedHeading()
 		if (gyropresent) {
 			return( ahrs.getAngle() - init_angle );
 		} else {
@@ -299,8 +304,8 @@ public class DriveTrain extends Subsystem implements IDriveTrain {
 			SmartDashboard.putNumber("DT - Left Encoder Velocity", leftTalon.getSelectedSensorVelocity(0));
 			SmartDashboard.putNumber("DT - Right EncoderVelocity", rightTalon.getSelectedSensorVelocity(0));
 			SmartDashboard.putNumber("DT - Heading", getHeading());
-			SmartDashboard.putNumber("total left current", totalLeftCurrent);
-			SmartDashboard.putNumber("total right current", totalRightCurrent);
+			SmartDashboard.putNumber("DT - Total Left Current", getTotalLeftCurrent());
+			SmartDashboard.putNumber("DT - Total Right Current", getTotalRightCurrent());
 			SmartDashboard.putBoolean("Decell on?", decellOn);
 
 			delayCount = 0;
