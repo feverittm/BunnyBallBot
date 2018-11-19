@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
+import frc.robot.commands.ArcadeDrive;
 
 /**
  *
@@ -31,22 +32,23 @@ public class DriveTrain extends Subsystem implements IDriveTrain {
 	private double prevRightV;
 	
 	// Include the shifter solenoid spec from last year's bunnybot.
-	public DoubleSolenoid shiftSolenoid;
+	private DoubleSolenoid shiftSolenoid;
 	int delayCount = 0;
 	public int gear = 0;
 
 	// We'll have a NavX Micro gyro.  We should be using the getHeading() method
 	// but we are using our own calculation
 	private AHRS ahrs;
-	private double init_angle;
 	public boolean gyropresent = false;
 
-	public boolean decellOn = true; // Default is false.
-	public double decellSpeed = 0.2;
-	public double decellDivider = 1.2;
+	// Let's leave our deceleration control code in place for now, but turn it off.
+	public boolean decellOn = false; // Default is true.
+	private double decellSpeed = 0.2;
+	private double decellDivider = 1.2;
 	
-	public static double totalLeftCurrent;
-	public static double totalRightCurrent;
+	// We are tracking total drivetrain current
+	private static double totalLeftCurrent;
+	private static double totalRightCurrent;
 
 	public DriveTrain() {
 
@@ -63,6 +65,7 @@ public class DriveTrain extends Subsystem implements IDriveTrain {
 		 * https://github.com/Team997Coders/BunnyBotElmer/blob/master/src/main/java/frc/team997/robot/subsystems/DriveTrain.java
 		 */
 		
+		// drive motors are connected to CAN.  6 CIM drive: 1 TalonSRX and 2 VictorSPX per side
 		leftTalon = new TalonSRX(RobotMap.Ports.leftTalonPort);
 		rightTalon = new TalonSRX(RobotMap.Ports.rightTalonPort);
 		leftVictor = new VictorSPX(RobotMap.Ports.leftVictorPort);
@@ -87,7 +90,9 @@ public class DriveTrain extends Subsystem implements IDriveTrain {
 		rightVictor2.setInverted(true);
 
 		/*
-		 * CTRE encoder on each Talon on the drivetrain, mechanically connected to the front wheels (i.e. 1:1 ratio)
+		 * CTRE encoder on each side of the drivetrain
+		 * Mechanically connected directly to the rear wheel axle (i.e. 1:1 ratio)
+		 * Electrically connected to the appropriate TalonSRX for that side
 		 */
 		leftTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
 		rightTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
@@ -100,10 +105,8 @@ public class DriveTrain extends Subsystem implements IDriveTrain {
 		/* set the peak, nominal outputs */
 		leftTalon.configNominalOutputForward(0, 10);
 		leftTalon.configNominalOutputReverse(0, 10);
-		//leftTalon.configPeakOutputForward(1, 10);	//Use for PB
-		//leftTalon.configPeakOutputReverse(-1, 10); //Use for PB
-		leftTalon.configPeakOutputForward(0.6, 10);	//Use for extrasensitive CB
-		leftTalon.configPeakOutputReverse(-0.6, 10); //Use for extrasensitive CB
+		leftTalon.configPeakOutputForward(1, 10);
+		leftTalon.configPeakOutputReverse(-1, 10);
 		
 		leftTalon.enableCurrentLimit(true);
 		leftTalon.configPeakCurrentLimit(40, 10);
@@ -112,20 +115,16 @@ public class DriveTrain extends Subsystem implements IDriveTrain {
 		
 		rightTalon.configNominalOutputForward(0, 10);
 		rightTalon.configNominalOutputReverse(0, 10);
-		//rightTalon.configPeakOutputForward(1, 10); //Use for PB
-		//rightTalon.configPeakOutputReverse(-1, 10); //Use for PB
-		rightTalon.configPeakOutputForward(0.6, 10);  //Use for extrasensitive CB
-		rightTalon.configPeakOutputReverse(-0.6, 10); //Use for extrasensitive CB
-		
+		rightTalon.configPeakOutputForward(1, 10);
+		rightTalon.configPeakOutputReverse(-1, 10);
+
 		rightTalon.enableCurrentLimit(true);
 		rightTalon.configPeakCurrentLimit(40, 10);
 		rightTalon.configPeakCurrentDuration(100, 10);
 		rightTalon.configContinuousCurrentLimit(30, 10);
 		
 		leftTalon.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 40, 10);
-		//leftTalon.configOpenloopRamp(0.25, 10);
 		rightTalon.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 40, 10);
-		//rightTalon.configOpenloopRamp(0.25, 10);
 		
 		/* set closed loop gains in slot0 */
 		leftTalon.config_kF(0, 0.1097, 10);
@@ -142,19 +141,22 @@ public class DriveTrain extends Subsystem implements IDriveTrain {
 		new SensorCollection(rightTalon);
 
 		/*
-		 * Set-up the gyro
+		 * Set-up the gyro.
+		 * check if present so that it will work equally well with our
+		 * practice robot, or in simulation
+		 *   ahrs.getYaw();
 		 */
 		try {
 			ahrs = new AHRS(RobotMap.Ports.AHRS);
 			System.out.println("ahrs is cool!");
 			ahrs.reset();
-			init_angle = ahrs.getAngle();
+			ahrs.zeroYaw();
 			gyropresent = true;
 		} catch (RuntimeException e) {
-			System.out.println("DT - The AHRS constructor do a bad.");
+			System.out.println("DT - The gyro is not valid!");
 		}
 		
-    	//Motor.changeControlMode(TalonControlMode.PercentVbus);
+		// reset the talon speed and encoder position
 		leftTalon.setSelectedSensorPosition(0, 0, 10);
 		rightTalon.setSelectedSensorPosition(0, 0, 10);
     	leftTalon.set(ControlMode.PercentOutput, 0.0);
@@ -171,7 +173,7 @@ public class DriveTrain extends Subsystem implements IDriveTrain {
 	public void initDefaultCommand() {
 		// Set the default command for a subsystem here.
 		//setDefaultCommand(new TankDrive());
-		//setDefaultCommand(new ArcadeDrive());
+		setDefaultCommand(new ArcadeDrive());
 	}
 
 	private double getDecell(double velocity, double prevVelocity) { // copied from 2017 :I
@@ -248,7 +250,8 @@ public class DriveTrain extends Subsystem implements IDriveTrain {
 	public double getHeading() {
 		//ahrs.getFusedHeading()
 		if (gyropresent) {
-			return( ahrs.getAngle() - init_angle );
+			//return( ahrs.getAngle() - init_angle );
+			return( ahrs.getYaw() );
 		} else {
 			return 0.0;
 		}
@@ -262,14 +265,6 @@ public class DriveTrain extends Subsystem implements IDriveTrain {
 		}
 	}
 
-	public double getleftVelocity() {
-		return leftTalon.getSelectedSensorVelocity(0);
-	}
-	
-	public double getrightvelocity() {
-		return rightTalon.getSelectedSensorVelocity(0);
-	}
-	
 	public void setBrake() {
 		leftTalon.setNeutralMode(NeutralMode.Brake);
 		rightTalon.setNeutralMode(NeutralMode.Brake);
@@ -300,27 +295,6 @@ public class DriveTrain extends Subsystem implements IDriveTrain {
     	}
     }
 
-	public void updateDashboard() {
-		if (delayCount == 10) {
-			SmartDashboard.putNumber("DT - Left master voltage", leftTalon.getMotorOutputVoltage());
-			SmartDashboard.putNumber("DT - Right master voltage", rightTalon.getMotorOutputVoltage());
-			SmartDashboard.putNumber("DT - Left Encoder", getLeftEncoderTicks());
-			SmartDashboard.putNumber("DT - Right Encoder", getRightEncoderTicks());
-			SmartDashboard.putNumber("DT - Left Encoder distance in inches", getLeftEncoderTicks()*RobotMap.Values.inchesPerTick);
-			SmartDashboard.putNumber("DT - Right Encoder distance in inches", getRightEncoderTicks()*RobotMap.Values.inchesPerTick);
-			SmartDashboard.putNumber("DT - Left Encoder Velocity", leftTalon.getSelectedSensorVelocity(0));
-			SmartDashboard.putNumber("DT - Right EncoderVelocity", rightTalon.getSelectedSensorVelocity(0));
-			SmartDashboard.putNumber("DT - Heading", getHeading());
-			SmartDashboard.putNumber("DT - Total Left Current", getTotalLeftCurrent());
-			SmartDashboard.putNumber("DT - Total Right Current", getTotalRightCurrent());
-			SmartDashboard.putBoolean("Decell on?", decellOn);
-
-			delayCount = 0;
-		} else {
-			delayCount++;
-		}		
-	}
-
 	public double getTotalLeftCurrent() {
 		totalLeftCurrent = (Robot.pdp.getCurrent(RobotMap.PDPPorts.leftDriveTrainTalon)
 					+ Robot.pdp.getCurrent(RobotMap.PDPPorts.leftDriveTrain)
@@ -336,18 +310,23 @@ public class DriveTrain extends Subsystem implements IDriveTrain {
 		return totalRightCurrent;
 	}
 
-	public void safeVoltages(double leftSpeed, double rightSpeed) {
-
-		if (getTotalLeftCurrent() > RobotMap.Values.drivetrainLeftLimit) {
-			leftTalon.set(ControlMode.PercentOutput, 0);
+	public void updateDashboard() {
+		if (delayCount == 10) {
+			SmartDashboard.putNumber("DT - Left master voltage", leftTalon.getMotorOutputVoltage());
+			SmartDashboard.putNumber("DT - Right master voltage", rightTalon.getMotorOutputVoltage());
+			SmartDashboard.putNumber("DT - Left Encoder", getLeftEncoderTicks());
+			SmartDashboard.putNumber("DT - Right Encoder", getRightEncoderTicks());
+			SmartDashboard.putNumber("DT - Left Encoder distance in inches", getLeftEncoderTicks()*RobotMap.Values.inchesPerTick);
+			SmartDashboard.putNumber("DT - Right Encoder distance in inches", getRightEncoderTicks()*RobotMap.Values.inchesPerTick);
+			SmartDashboard.putNumber("DT - Left Encoder Velocity", leftTalon.getSelectedSensorVelocity(0));
+			SmartDashboard.putNumber("DT - Right EncoderVelocity", rightTalon.getSelectedSensorVelocity(0));
+			SmartDashboard.putNumber("DT - Heading", getHeading());
+			SmartDashboard.putNumber("DT - Total Left Current", getTotalLeftCurrent());
+			SmartDashboard.putNumber("DT - Total Right Current", getTotalRightCurrent());
+			SmartDashboard.putBoolean("Decell on?", decellOn);
+			delayCount = 0;
 		} else {
-			leftTalon.set(ControlMode.PercentOutput, leftSpeed);
-		}
-
-		if (getTotalRightCurrent() > RobotMap.Values.drivetrainRightLimit) {
-			rightTalon.set(ControlMode.PercentOutput, 0);
-		} else {
-			rightTalon.set(ControlMode.PercentOutput, rightSpeed);
-		}
+			delayCount++;
+		}		
 	}
 }

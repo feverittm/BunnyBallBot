@@ -26,17 +26,17 @@ public class Gatherer extends Subsystem {
 		collectMotor.set(speed);
 	}
 
+	public double getGatherCurrent() {
+		double d = Robot.pdp.getCurrent(RobotMap.PDPPorts.gatherVictor);
+		return d;
+	}
+
 	public void updateDashboard() {
 		if (delayCount == 10) {
-			SmartDashboard.putNumber("total gatherer current", getGatherCurrent());
+			SmartDashboard.putNumber("GT - Total gatherer current", getGatherCurrent());
 			delayCount = 0;
 		} else {
 			delayCount++;
 		}		
-	}
-
-	public double getGatherCurrent() {
-		double d = Robot.pdp.getCurrent(RobotMap.PDPPorts.gatherVictor);
-		return d;
 	}
 }

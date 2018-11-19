@@ -28,10 +28,6 @@ public interface IDriveTrain {
 	public double getHeading();
 	
 	public double getAHRSAngle();
-
-	public double getleftVelocity();
-	
-	public double getrightvelocity();
 	
 	public void setBrake();
 	
@@ -39,11 +35,9 @@ public interface IDriveTrain {
 
 	public void shift(int g);
 
-	public void updateDashboard();
-
 	public double getTotalLeftCurrent();
 
 	public double getTotalRightCurrent();
 
-	public void safeVoltages(double leftSpeed, double rightSpeed);
+	public void updateDashboard();
 }
