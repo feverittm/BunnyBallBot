@@ -19,21 +19,28 @@ public class RobotMap {
 	public static class Ports {
 		public static int
 		//CAN
-		leftTalonPort = 3,
-		rightTalonPort = 8,
+		leftTalonPort = 1,
+		rightTalonPort = 2,
 		
 		//PWM
-		leftVictorPort = 4,
-		leftVictorPort2 = 5,
-		rightVictorPort = 6,
-		rightVictorPort2 = 7,
+		leftVictorPort = 3,
+		leftVictorPort2 = 4,
+		rightVictorPort = 5,
+		rightVictorPort2 = 6,
 
 		//Ball Gatherer/Collector
-		gatherVictor = 0,
+		gatherVictor = 7,
 		
+		// Sorter
+		sortTalon = 8,
+
 		//PNEUMATICS
 		shifterSolenoidLow = 0,
 		shifterSolenoidHigh = 1,
+		sortSolenoid = 2,
+
+		//Digital Inputs
+		ballSensor = 0,
 
 		//GAMEPADS
 		GamePad1 = 0, 
@@ -50,6 +57,7 @@ public class RobotMap {
 		rightDriveTrain = 0,
 		rightDriveTrain2 = 1,
 		gatherVictor = 2,
+		sortTalon = 3,
 		leftDriveTrain = 12,
 		leftDriveTrain2 = 13,
 		leftDriveTrainTalon = 14,
@@ -74,9 +82,19 @@ public class RobotMap {
 		//then 0.000138 then 0.000514
 		driveAngleD = 0,
 		
-		//voltage limits in amps
+		//current limits in amps
 		drivetrainLeftLimit = 81, //81
-		drivetrainRightLimit = 81; //81
+		drivetrainRightLimit = 81, //81
+
+		// Gatherer
+		gatherSpeed = 0.5,
+
+		//Sorter
+		ejectTime = 250,
+		sorterCurrentLimit = 20,
+
+		// dummy value to hold semi-colon at the end of the list :-)
+		values_end;
 	}
 
 	public static class Buttons {
