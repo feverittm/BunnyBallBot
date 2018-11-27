@@ -14,25 +14,48 @@ import edu.wpi.first.wpilibj.SerialPort;
  * to a variable name. This provides flexibility changing wiring, makes checking
  * the wiring easier and significantly reduces the number of magic numbers
  * floating around.
+ * 
+ * Type	Motor Controller	PDP Port	Breaker	CAN ID/PWM port	Purpose
+ * CAN	Victor SPX			15			40		1				Drivetrain
+ * CAN	Victor SPX			14			40		2				Drivetrain
+ * CAN	Victor SPX			13			40		3				Drivetrain
+ * CAN	Victor SPX			12			40		4				Drivetrain
+ * CAN	Victor SPX			11			30		5				Front Hopper
+ * CAN	Victor SPX			10			30		6				Front Hopper
+ * CAN	Talon SRX			0			40		7				Intake
+ * CAN	Talon SRX			1			40		8				Sorter
+ * CAN	Talon SRX			2			40		9				Drivetrain
+ * CAN	Talon SRX			3			40		10				Drivetrain
+ * PWM	Victor SP			4			30		8				Rear Hopper
+ * PWM	Victor SP			5			30		9				Output
  */
+
 public class RobotMap {
 	public static class Ports {
 		public static int
 		//CAN
-		leftTalonPort = 1,
-		rightTalonPort = 2,
-		
-		//PWM
-		leftVictorPort = 3,
-		leftVictorPort2 = 4,
-		rightVictorPort = 5,
-		rightVictorPort2 = 6,
+		leftTalonPort = 9,
+		leftVictorPort = 1,
+		leftVictorPort2 = 2,
+		rightTalonPort = 10,
+		rightVictorPort = 3,
+		rightVictorPort2 = 4,
 
-		//Ball Gatherer/Collector
+		//Ball Gatherer/Collector/Intake
 		gatherVictor = 7,
+
+		//Front Hopper
+		frontHopperMotorPortH = 5,
+		frontHopperMotorPortV = 6,
 		
 		// Sorter
 		sortTalon = 8,
+
+		// Rear Hopper (on PWM)
+		rearHopperPWM = 8,
+
+		// ball ejector/output (on PWM)
+		ballOutputPWM = 9,
 
 		//PNEUMATICS
 		shifterSolenoidLow = 0,
@@ -54,14 +77,18 @@ public class RobotMap {
 	public static class PDPPorts {
 		public static int
 		
-		rightDriveTrain = 0,
-		rightDriveTrain2 = 1,
-		gatherVictor = 2,
-		sortTalon = 3,
-		leftDriveTrain = 12,
-		leftDriveTrain2 = 13,
-		leftDriveTrainTalon = 14,
-		rightDriveTrainTalon = 15;
+		leftDriveTrainTalon = 2,
+		leftDriveTrain = 15,
+		leftDriveTrain2 = 14,
+		rightDriveTrainTalon = 3,
+		rightDriveTrain = 13,
+		rightDriveTrain2 = 12,
+		gatherVictor = 0,
+		frontHopperMotorPortH = 11,
+		frontHopperMotorPortV = 10,
+		sortTalon = 1,
+		rearHopper = 4,
+		ballOutput = 5;
 	}
 	
 	public static class Values {
