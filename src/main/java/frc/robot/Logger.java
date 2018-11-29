@@ -11,12 +11,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Logger {
    
     private BufferedWriter writer;
-    private boolean logging =false; 
+    private boolean logging = false; 
     private final String loggerBoolean = "Logging";
     private static Logger instance;
-    private String fileName ="";
+    private String fileName = "";
     private final String SDFileName = "File Name: ";
-    private long startTime =0;
+    private long startTime = 0;
     private double timeSinceStart; 
     DriverStation ds;
     
