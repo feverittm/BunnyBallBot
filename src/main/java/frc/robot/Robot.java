@@ -36,6 +36,7 @@ public class Robot extends TimedRobot {
   public static Sorter sorter;
   public static PowerDistributionPanel pdp;
   public static OI m_oi;
+  public static Logger logger;
 
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -95,6 +96,8 @@ public class Robot extends TimedRobot {
     } catch (Exception e) {
       e.printStackTrace();
     }
+
+    logger = Logger.getInstance();
     
     LiveWindow.disableTelemetry(pdp); // turn-off the telemetry features in Livewindow to stop the CTRE Timeouts
   
@@ -122,6 +125,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
+    logger.close();
   }
 
   @Override
@@ -143,6 +147,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     m_autonomousCommand = m_chooser.getSelected();
+    logger.openFile();
 
     /*
      * String autoSelected = SmartDashboard.getString("Auto Selector",
@@ -155,6 +160,7 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.start();
     }
+    updateAllSmartDashboard();
   }
 
   /**
@@ -163,6 +169,8 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     Scheduler.getInstance().run();
+    logger.logAll();
+    updateAllSmartDashboard();
   }
 
   @Override
@@ -174,6 +182,7 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+    updateAllSmartDashboard();
   }
 
   /**
@@ -182,6 +191,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
+    updateAllSmartDashboard();
   }
 
   /**
@@ -189,5 +199,10 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
+  }
+
+  private void updateAllSmartDashboard() {
+    Robot.drivetrain.updateDashboard();
+    Robot.sorter.updateDashboard();
   }
 }
