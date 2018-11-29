@@ -65,9 +65,10 @@ public class Logger {
     public void openFile() {
     	if((this.wantToLog() || this.ds.isFMSAttached())){
 	        try{
-	            path = this.getPath();
+				path = this.getPath();
+				System.out.println("File path: "+path);
 	            this.writer = new BufferedWriter(new FileWriter(path));
-	            this.writer.write("time,voltage,current,left_tics,left_vel,right_tics,right_vel");
+	            this.writer.write("time,voltage,current,left_tics,left_vel,right_tics,right_vel,heading");
 	            this.writer.newLine();
 	            this.startTime = System.currentTimeMillis();
 	        } catch (IOException e) {
@@ -84,7 +85,7 @@ public class Logger {
         	return String.format("/home/lvuser/spartanlogs/%d_%s.txt",++this.max,this.fileName);
         }else {
             return String.format("/home/lvuser/spartanlogs/%d_log.txt", ++this.max);
-        }
+		}
     }
    
     public void logAll() {
@@ -98,7 +99,8 @@ public class Logger {
 	            this.writer.write(String.format(",%.3f", Robot.drivetrain.getLeftEncoderTicks()));
 	            this.writer.write(String.format(",%.3f", Robot.drivetrain.getLeftEncoderRate()));
 	            this.writer.write(String.format(",%.3f", Robot.drivetrain.getRightEncoderTicks()));
-	            this.writer.write(String.format(",%.3f", Robot.drivetrain.getRightEncoderRate()));
+				this.writer.write(String.format(",%.3f", Robot.drivetrain.getRightEncoderRate()));
+				this.writer.write(String.format(",%.3f", Robot.drivetrain.getHeading()));
 	            
 	            this.writer.newLine();
 	        }
