@@ -42,14 +42,14 @@ public class RobotMap {
 		rightVictorPort2 = 4,
 
 		//Ball Gatherer/Collector/Intake
-		gatherVictor = 7,
+		gatherMotorPort = 8, // change due to broken TalonSRX on channel 7
 
 		//Front Hopper
 		frontHopperMotorPortH = 5,
 		frontHopperMotorPortV = 6,
 		
 		// Sorter
-		sortTalon = 8,
+		sortTalon = 7,
 
 		// Rear Hopper (on PWM)
 		rearHopperPWM = 8,
@@ -61,6 +61,7 @@ public class RobotMap {
 		shifterSolenoidLow = 0,
 		shifterSolenoidHigh = 1,
 		sortSolenoid = 2,
+		bunnyDumperSolenod = 4,
 
 		//Digital Inputs
 		ballSensor = 0,

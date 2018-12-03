@@ -22,7 +22,7 @@ public class Sorter extends Subsystem {
 	public double sortCurrent = 0;
 
 	public Sorter() {
-		sortMotor = new TalonSRX(RobotMap.Ports.gatherVictor);
+		sortMotor = new TalonSRX(RobotMap.Ports.sortTalon);
 		sortMotor.setInverted(false);
 		sortMotor.setNeutralMode(NeutralMode.Coast);
 		sortMotor.configNominalOutputReverse(0, 10);

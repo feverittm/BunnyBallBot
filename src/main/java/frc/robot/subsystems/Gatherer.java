@@ -2,7 +2,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -14,14 +14,14 @@ import frc.robot.RobotMap;
  *  by a VictorSPX can motor controller.
  */
 public class Gatherer extends Subsystem {
-	private VictorSPX collectMotor;
+	private TalonSRX collectMotor;
 
 	int delayCount=0;
 	double collectCurrent = 0.0;
 	public boolean state = false;
 
 	public Gatherer() {
-		collectMotor = new VictorSPX(RobotMap.Ports.gatherVictor);
+		collectMotor = new TalonSRX(RobotMap.Ports.gatherMotorPort);
 		collectMotor.setInverted(false);
 		collectMotor.setNeutralMode(NeutralMode.Coast);
 		collectMotor.configNominalOutputReverse(0, 10);
@@ -34,7 +34,10 @@ public class Gatherer extends Subsystem {
 	}
 
 	public void setGatherSpeed(double speed) {
-		collectMotor.set(ControlMode.PercentOutput, speed);
+		if (speed != 0){
+			state = true;
+			collectMotor.set(ControlMode.PercentOutput, speed);
+		}
 	}
 
 	public void stop() {

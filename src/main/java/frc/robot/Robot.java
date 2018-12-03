@@ -15,10 +15,10 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.AutoDoNothing;
-import frc.robot.subsystems.BallDumper;
 import frc.robot.subsystems.BunnyDumper;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Gatherer;
+import frc.robot.subsystems.RearHopper;
 import frc.robot.subsystems.Sorter;
 
 /**
@@ -31,7 +31,7 @@ import frc.robot.subsystems.Sorter;
 public class Robot extends TimedRobot {
   public static DriveTrain drivetrain;
   public static Gatherer gather;
-  public static BallDumper ballDumper;
+  public static RearHopper rearHopper;
   public static BunnyDumper bunnyDumper;
   public static Sorter sorter;
   public static PowerDistributionPanel pdp;
@@ -73,7 +73,7 @@ public class Robot extends TimedRobot {
     }
 
     try {
-      ballDumper = new BallDumper();
+      rearHopper = new RearHopper();
     } catch (Exception e) {
       e.printStackTrace();
     }
