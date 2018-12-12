@@ -78,18 +78,18 @@ public class RobotMap {
 	public static class PDPPorts {
 		public static int
 		
-		leftDriveTrainTalon = 2,
-		leftDriveTrain = 15,
-		leftDriveTrain2 = 14,
-		rightDriveTrainTalon = 3,
-		rightDriveTrain = 13,
-		rightDriveTrain2 = 12,
-		gatherVictor = 0,
+		leftDriveTrainMaster = 2,
+		leftDriveTrainS1 = 15,
+		leftDriveTrainS2 = 14,
+		rightDriveTrainMaster = 3,
+		rightDriveTrainS1 = 13,
+		rightDriveTrainS2 = 12,
+		gatherMotorPort = 0,
 		frontHopperMotorPortH = 11,
 		frontHopperMotorPortV = 10,
-		sortTalon = 1,
-		rearHopper = 4,
-		ballOutput = 5;
+		sorterMotorPort = 1,
+		rearHopperMotorPort = 4,
+		ballOutputMotorPort = 5;
 	}
 	
 	public static class Values {
@@ -115,7 +115,14 @@ public class RobotMap {
 		drivetrainRightLimit = 81, //81
 
 		// Gatherer
-		gatherSpeed = 0.5,
+		gatherSpeed = 0.8,
+
+		// FrontHopper
+		frontHopper_HSpeed = 0.5,
+		frontHopper_VSpeed = 0.5,
+		
+		// RearHopper
+		rearHopper_Speed = 0.5,
 
 		//Sorter
 		ejectTime = 250,

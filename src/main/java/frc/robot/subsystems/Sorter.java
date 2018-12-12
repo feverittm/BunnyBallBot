@@ -77,6 +77,6 @@ public class Sorter extends Subsystem {
 	}
 
 	public double getSorterCurrent() {
-		return Robot.pdp.getCurrent(RobotMap.PDPPorts.sortTalon);
+		return Robot.pdp.getCurrent(RobotMap.PDPPorts.sorterMotorPort);
 	}
 }

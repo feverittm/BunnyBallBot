@@ -10,22 +10,44 @@ import frc.robot.RobotMap;
  *
  */
 public class RearHopper extends Subsystem {
-	private VictorSP rearHopperMotor;
+	private VictorSP hopperMotor;
 
-	int delayCount=0;
-	double totalGatherCurrent = 0.0;
+	private int delayCount=0;
+	public boolean state = false;
 
 	public RearHopper() {
-		rearHopperMotor = new VictorSP(RobotMap.Ports.rearHopperPWM);
+		hopperMotor = new VictorSP(RobotMap.Ports.rearHopperPWM);
+        hopperMotor.setInverted(false);
 	}
-
+		
 	public void initDefaultCommand() {
 	}
 
-	public void setGatherSpeed(double speed) {
-		rearHopperMotor.set(speed);
+	public void setHopperSpeed(double speed){
+		if (speed > 0) {
+			state = true;
+		}
+		hopperMotor.set(speed);
+	}
+
+	public void stop() {
+		state = false;
+		setHopperSpeed(0);
 	}
 
 	public void updateDashboard() {
+		if (delayCount == 10) {
+			SmartDashboard.putBoolean("Rear Hopper Running?", state);
+			SmartDashboard.putNumber("Rear Hopper Current", getHopperCurrent());
+
+			delayCount = 0;
+		} else {
+			delayCount++;
+		}		
+	}
+
+	public double getHopperCurrent() {
+		double d = Robot.pdp.getCurrent(RobotMap.PDPPorts.rearHopperMotorPort);
+		return d;
 	}
 }

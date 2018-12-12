@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -15,8 +16,10 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.AutoDoNothing;
+import frc.robot.subsystems.BallOutput;
 import frc.robot.subsystems.BunnyDumper;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.FrontHopper;
 import frc.robot.subsystems.Gatherer;
 import frc.robot.subsystems.RearHopper;
 import frc.robot.subsystems.Sorter;
@@ -29,12 +32,15 @@ import frc.robot.subsystems.Sorter;
  * project.
  */
 public class Robot extends TimedRobot {
+  public static BallOutput ballOutput;
+  public static BunnyDumper bunnyDumper;
   public static DriveTrain drivetrain;
+  public static FrontHopper frontHopper;
   public static Gatherer gather;
   public static RearHopper rearHopper;
-  public static BunnyDumper bunnyDumper;
   public static Sorter sorter;
   public static PowerDistributionPanel pdp;
+  public static Compressor compressor;
   public static OI m_oi;
   public static Logger logger;
 
@@ -48,17 +54,17 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     try {
-      pdp = new PowerDistributionPanel();
-      pdp.clearStickyFaults();
+      drivetrain = new DriveTrain();
     } catch (Exception e) {
       e.printStackTrace();
     }
 
     try {
-      drivetrain = new DriveTrain();
+      frontHopper = new FrontHopper();
     } catch (Exception e) {
       e.printStackTrace();
     }
+ 
 
     try {
       gather = new Gatherer();
@@ -79,7 +85,21 @@ public class Robot extends TimedRobot {
     }
 
     try {
+      ballOutput = new BallOutput();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    try {
       sorter = new Sorter();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    // Global subsystems
+    try {
+      compressor = new Compressor();
+      compressor.clearAllPCMStickyFaults();
     } catch (Exception e) {
       e.printStackTrace();
     }

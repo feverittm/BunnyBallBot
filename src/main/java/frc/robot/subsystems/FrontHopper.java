@@ -16,8 +16,8 @@ public class FrontHopper extends Subsystem {
 	private VictorSPX hopperMotorH;
 	private VictorSPX hopperMotorV;
 
-	int delayCount=0;
-	double totalHopperCurrent = 0.0;
+	private int delayCount=0;
+	public boolean state = false;
 
 	public FrontHopper() {
 		hopperMotorH = new VictorSPX(RobotMap.Ports.frontHopperMotorPortH);
@@ -42,12 +42,21 @@ public class FrontHopper extends Subsystem {
 	}
 
 	public void setHopperSpeed(double speedH, double speedV){
+		if (speedH > 0 || speedV > 0) {
+			state = true;
+		}
 		hopperMotorH.set(ControlMode.PercentOutput, speedH);
 		hopperMotorV.set(ControlMode.PercentOutput, speedV);
 	}
 
+	public void stop() {
+		state = false;
+		setHopperSpeed(0,0);
+	}
+
 	public void updateDashboard() {
 		if (delayCount == 10) {
+			SmartDashboard.putBoolean("Front Hopper Running?", state);
 			SmartDashboard.putNumber("front hopper vertical current", getHopperHCurrent());
 			SmartDashboard.putNumber("front hopper horizontal current", getHopperVCurrent());
 			delayCount = 0;
