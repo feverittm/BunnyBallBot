@@ -27,6 +27,7 @@ public class AutoDriveForward extends PIDCommand {
   protected void initialize() {
     System.out.println("Init. AutoDriveForward");
     getPIDController().setPID(RobotMap.Values.driveDistanceP, RobotMap.Values.driveDistanceI, RobotMap.Values.driveDistanceD);
+    Robot.drivetrain.resetEncoders();
     setSetpoint(distance);
     this.getPIDController().enable();
   }

@@ -10,6 +10,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.AutoDriveForward;
 import frc.robot.commands.ShiftCommand;
 import frc.robot.commands.ToggleBallMode;
 import frc.robot.commands.ToggleFrontHopper;
@@ -49,6 +50,7 @@ public class OI {
 		SmartDashboard.putData("Toggle Front Hopper", new ToggleFrontHopper());
 		SmartDashboard.putData("Toggle Sorter", new ToggleSorter());
 		SmartDashboard.putData("Toggle Rear Hopper", new ToggleRearHopper());
+		SmartDashboard.putData("Drive Forward by 500 Tics", new AutoDriveForward(500));
   }
 
 	public double getLeftY() {
