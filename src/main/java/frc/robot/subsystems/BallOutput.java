@@ -43,7 +43,7 @@ public class BallOutput extends Subsystem {
 	}
 
 	public double getOutputCurrent() {
-		outputCurrent = Robot.pdp.getCurrent(RobotMap.PDPPorts.ballOutput);
+		outputCurrent = Robot.pdp.getCurrent(RobotMap.PDPPorts.ballOutputMotorPort);
 		return outputCurrent;
 	}
 

@@ -17,12 +17,12 @@ public class ToggleRearHopper extends Command {
   boolean state = false;
 	
     public ToggleRearHopper() {
-      requires(Robot.gather);
-      this.state = !Robot.frontHopper.state;
+      requires(Robot.rearHopper);
+      this.state = !Robot.rearHopper.state;
     }
 
     public ToggleRearHopper(boolean state) {
-      requires(Robot.frontHopper);
+      requires(Robot.rearHopper);
       this.state = state;
     }
 
@@ -32,13 +32,13 @@ public class ToggleRearHopper extends Command {
     protected void execute() {
       if (this.state == false) {
         // turn gather off
-        Robot.frontHopper.stop();
-        Robot.frontHopper.state = false;
+        Robot.rearHopper.stop();
+        Robot.rearHopper.state = false;
       }
       else {
         // turn gather on
-        Robot.frontHopper.setHopperSpeed(RobotMap.Values.frontHopper_HSpeed, RobotMap.Values.frontHopper_VSpeed);
-        Robot.frontHopper.state = true;
+        Robot.rearHopper.setHopperSpeed(RobotMap.Values.rearHopper_Speed);
+        Robot.rearHopper.state = true;
       }
     }
 

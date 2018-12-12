@@ -296,17 +296,16 @@ public class DriveTrain extends Subsystem implements IDriveTrain {
     }
 
 	public double getTotalLeftCurrent() {
-		totalLeftCurrent = (Robot.pdp.getCurrent(RobotMap.PDPPorts.leftDriveTrainTalon)
-					+ Robot.pdp.getCurrent(RobotMap.PDPPorts.leftDriveTrain)
-					+ Robot.pdp.getCurrent(RobotMap.PDPPorts.leftDriveTrain2));
+		totalLeftCurrent = (Robot.pdp.getCurrent(RobotMap.PDPPorts.leftDriveTrainMaster)
+			+ Robot.pdp.getCurrent(RobotMap.PDPPorts.leftDriveTrainS1)
+			+ Robot.pdp.getCurrent(RobotMap.PDPPorts.leftDriveTrainS2));
 		return totalLeftCurrent;
 	}
 
 	public double getTotalRightCurrent() {
-		
-		totalRightCurrent = (Robot.pdp.getCurrent(RobotMap.PDPPorts.rightDriveTrainTalon)
-				+ Robot.pdp.getCurrent(RobotMap.PDPPorts.rightDriveTrain)
-				+ Robot.pdp.getCurrent(RobotMap.PDPPorts.rightDriveTrain2));
+		totalRightCurrent = (Robot.pdp.getCurrent(RobotMap.PDPPorts.rightDriveTrainMaster)
+			+ Robot.pdp.getCurrent(RobotMap.PDPPorts.rightDriveTrainS1)
+			+ Robot.pdp.getCurrent(RobotMap.PDPPorts.rightDriveTrainS2));
 		return totalRightCurrent;
 	}
 

@@ -46,7 +46,7 @@ public class Gatherer extends Subsystem {
 	}
 
 	public double getCollectCurrent() {
-		collectCurrent = Robot.pdp.getCurrent(RobotMap.PDPPorts.gatherVictor);
+		collectCurrent = Robot.pdp.getCurrent(RobotMap.PDPPorts.gatherMotorPort);
 		return collectCurrent;
 	}
 

@@ -17,7 +17,7 @@ public class ToggleFrontHopper extends Command {
   boolean state = false;
 	
     public ToggleFrontHopper() {
-      requires(Robot.gather);
+      requires(Robot.frontHopper);
       this.state = !Robot.frontHopper.state;
     }
 
