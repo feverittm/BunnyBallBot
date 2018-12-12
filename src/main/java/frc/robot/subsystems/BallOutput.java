@@ -2,7 +2,6 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 
@@ -11,7 +10,6 @@ import frc.robot.RobotMap;
  *  by a VictorSPX can motor controller.
  */
 public class BallOutput extends Subsystem {
-	private VictorSP rearMotor;
 	private VictorSP outputMotor;
 
 	int delayCount=0;
@@ -19,8 +17,6 @@ public class BallOutput extends Subsystem {
 	public boolean state = false;
 
 	public BallOutput() {
-		rearMotor = new VictorSP(RobotMap.Ports.rearHopperPWM);
-		rearMotor.setInverted(false);
 		outputMotor = new VictorSP(RobotMap.Ports.ballOutputPWM);
 		outputMotor.setInverted(false);
 	}
@@ -28,31 +24,20 @@ public class BallOutput extends Subsystem {
 	public void initDefaultCommand() {
 	}
 
-	public void setRearHopperSpeed(double speed) {
-		rearMotor.set(speed);
-	}
-
 	public void setOutputSpeed(double speed) {
+		if (speed > 0) {
+			state = true;
+		}
 		outputMotor.set(speed);
 	}
 
 	public void stop() {
 		outputMotor.set(0.0);
-		rearMotor.set(0.0);
 		state = false;
 	}
 
 	public double getOutputCurrent() {
 		outputCurrent = Robot.pdp.getCurrent(RobotMap.PDPPorts.ballOutputMotorPort);
 		return outputCurrent;
-	}
-
-	public void updateDashboard() {
-		if (delayCount == 10) {
-			SmartDashboard.putNumber("Ball Output current", getOutputCurrent());
-			delayCount = 0;
-		} else {
-			delayCount++;
-		}		
 	}
 }

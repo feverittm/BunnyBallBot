@@ -24,7 +24,7 @@ public class RearHopper extends Subsystem {
 	}
 
 	public void setHopperSpeed(double speed){
-		if (speed > 0) {
+		if (Math.abs(speed) > 0) {
 			state = true;
 		}
 		hopperMotor.set(speed);

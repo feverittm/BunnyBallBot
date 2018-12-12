@@ -8,9 +8,20 @@ import frc.robot.Robot;
  *
  */
 public class ShiftCommand extends Command {
+    private int gear;
 
     public ShiftCommand() {
-    	requires(Robot.drivetrain);
+        requires(Robot.drivetrain);
+        if (Robot.drivetrain.gear == 0) {
+            gear = 1;
+        } else {
+            gear = 0;
+        };
+    }
+
+    public ShiftCommand(int _gear) {
+        requires(Robot.drivetrain);
+        gear = _gear;
     }
 
     // Called just before this Command runs the first time
@@ -19,14 +30,11 @@ public class ShiftCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	if(Robot.drivetrain.gear == 1) {
-    		Robot.drivetrain.shift(0);
-    	} else if(Robot.drivetrain.gear == 0) {
+    	if( gear == 1) {
     		Robot.drivetrain.shift(1);
     	} else {
-    		SmartDashboard.putNumber("Oh Noes! driveTrain shifter expected 1 or 0 at Robot.driveTrain.gear, "
-    				+ "got this instead.", Robot.drivetrain.gear);
-    	}
+    		Robot.drivetrain.shift(0);
+    	} 
     }
 
     // Make this return true when this Command no longer needs to run execute()

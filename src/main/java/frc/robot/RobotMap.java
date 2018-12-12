@@ -125,6 +125,7 @@ public class RobotMap {
 		rearHopper_Speed = 0.5,
 
 		//Sorter
+		sorterSpeed = 0.25,
 		ejectTime = 250,
 		sorterCurrentLimit = 20,
 
@@ -135,6 +136,7 @@ public class RobotMap {
 	public static class Buttons {
 		public static int
 		
-		shiftButton = 5;
+		shiftButton = 5,
+		ballmodeButton = 1;
 	}
 }

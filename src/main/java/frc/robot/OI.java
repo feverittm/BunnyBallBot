@@ -9,7 +9,13 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.ShiftCommand;
+import frc.robot.commands.ToggleBallMode;
+import frc.robot.commands.ToggleFrontHopper;
+import frc.robot.commands.ToggleGatherer;
+import frc.robot.commands.ToggleRearHopper;
+import frc.robot.commands.ToggleSorter;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -18,20 +24,31 @@ import frc.robot.commands.ShiftCommand;
 public class OI {
 	public Joystick 
 	GamePad1, 
-  GamePad2;
+  	GamePad2;
   
   public final JoystickButton
 	//decellToggleButton,
-	shiftButton;
+	shiftButton,
+	ballModeButton;
 
 	public OI() {
 		//JOYSTICK INIT
 		GamePad1 = new Joystick(RobotMap.Ports.GamePad1);
-    GamePad2 = new Joystick(RobotMap.Ports.GamePad2);
+    	GamePad2 = new Joystick(RobotMap.Ports.GamePad2);
     
     //DRIVETRAIN BUTTONS
 		shiftButton = new JoystickButton(GamePad1, RobotMap.Buttons.shiftButton);
 		shiftButton.whenPressed(new ShiftCommand());
+
+	// Control Buttons
+		ballModeButton = new JoystickButton(GamePad1, RobotMap.Buttons.ballmodeButton);
+		ballModeButton.whenPressed(new ToggleBallMode());
+
+	//SmartDashboard Buttons
+		SmartDashboard.putData("Toggle Gather", new ToggleGatherer());
+		SmartDashboard.putData("Toggle Front Hopper", new ToggleFrontHopper());
+		SmartDashboard.putData("Toggle Sorter", new ToggleSorter());
+		SmartDashboard.putData("Toggle Rear Hopper", new ToggleRearHopper());
   }
 
 	public double getLeftY() {

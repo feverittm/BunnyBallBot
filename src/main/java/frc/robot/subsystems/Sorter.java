@@ -20,6 +20,7 @@ public class Sorter extends Subsystem {
 	private DigitalInput ballSensor;
 
 	public double sortCurrent = 0;
+	public boolean state;
 
 	public Sorter() {
 		sortMotor = new TalonSRX(RobotMap.Ports.sortTalon);
@@ -46,16 +47,25 @@ public class Sorter extends Subsystem {
 
 	public void setSortSpeed(double speed) {
 		sortMotor.set(ControlMode.PercentOutput, speed);
+		state = true;
+	}
+
+	public void stop() {
+		sortMotor.set(ControlMode.PercentOutput, 0);
+		state = false;
 	}
 
 	public void ejectBall() {
 		double t = System.currentTimeMillis();
 		double s = sortMotor.getMotorOutputPercent();
+		sortMotor.set(ControlMode.PercentOutput, 0);
 		sortSolenoid.set(true);
+		SmartDashboard.putBoolean("Ejector State", sortSolenoid.get());
 		while(System.currentTimeMillis() - t < RobotMap.Values.ejectTime) {
 			sortMotor.set(ControlMode.PercentOutput, 0);
 		}
 		sortSolenoid.set(false);
+		SmartDashboard.putBoolean("Ejector State", sortSolenoid.get());
 		sortMotor.set(ControlMode.PercentOutput, s);
 	}
 
@@ -72,8 +82,8 @@ public class Sorter extends Subsystem {
 	}
 
 	public void updateDashboard() {
-		SmartDashboard.putNumber("SORT - Sorter Current", getSorterCurrent());
-		SmartDashboard.putBoolean("SORT - Ejecter State", sortSolenoid.get());
+		SmartDashboard.putNumber("Sorter Current", getSorterCurrent());
+		SmartDashboard.putBoolean("Ejector State", sortSolenoid.get());
 	}
 
 	public double getSorterCurrent() {
